@@ -13,7 +13,9 @@ const CubeVisualizer: React.FC<CubeVisualizerProps> = ({
   isAnimating = false 
 }) => {
   const getStickerClass = (color: CubeColor) => {
-    return `cube-sticker sticker-${color}`;
+    const colorClass = `cube-sticker sticker-${color}`;
+    console.log('Applying color class:', colorClass, 'for color:', color);
+    return colorClass;
   };
 
   const renderFace = (face: CubeColor[][], faceClass: string) => (
@@ -23,6 +25,14 @@ const CubeVisualizer: React.FC<CubeVisualizerProps> = ({
           <div
             key={`${rowIndex}-${colIndex}`}
             className={getStickerClass(color)}
+            style={{ 
+              backgroundColor: color === 'white' ? '#fafafa' : 
+                              color === 'yellow' ? '#ffd700' :
+                              color === 'orange' ? '#ff8c00' :
+                              color === 'red' ? '#ff0000' :
+                              color === 'green' ? '#00ff00' :
+                              color === 'blue' ? '#0066ff' : '#333'
+            }}
           />
         ))
       )}

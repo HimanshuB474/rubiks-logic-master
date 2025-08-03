@@ -10,13 +10,13 @@
     --background: 220 20% 8%;
     --foreground: 0 0% 98%;
     
-    /* Cube colors - vibrant and accurate */
-    --cube-white: 0 0% 95%;
-    --cube-yellow: 45 100% 55%;
-    --cube-orange: 25 100% 55%;
-    --cube-red: 0 85% 55%;
-    --cube-green: 120 60% 45%;
-    --cube-blue: 210 85% 55%;
+    /* Cube colors - vibrant and accurate Rubik's cube colors */
+    --cube-white: 0 0% 98%;
+    --cube-yellow: 54 100% 62%;
+    --cube-orange: 27 100% 55%;
+    --cube-red: 0 100% 50%;
+    --cube-green: 120 100% 35%;
+    --cube-blue: 210 100% 50%;
     
     /* UI colors */
     --primary: 210 85% 55%;
@@ -122,13 +122,31 @@
   .face-top { transform: rotateX(90deg) translateZ(150px); }
   .face-bottom { transform: rotateX(-90deg) translateZ(150px); }
   
-  /* Sticker colors */
-  .sticker-white { background: hsl(var(--cube-white)); }
-  .sticker-yellow { background: hsl(var(--cube-yellow)); }
-  .sticker-orange { background: hsl(var(--cube-orange)); }
-  .sticker-red { background: hsl(var(--cube-red)); }
-  .sticker-green { background: hsl(var(--cube-green)); }
-  .sticker-blue { background: hsl(var(--cube-blue)); }
+  /* Sticker colors - using both CSS variables and fallback colors */
+  .sticker-white { 
+    background: hsl(var(--cube-white)) !important; 
+    background-color: #fafafa !important;
+  }
+  .sticker-yellow { 
+    background: hsl(var(--cube-yellow)) !important; 
+    background-color: #ffd700 !important;
+  }
+  .sticker-orange { 
+    background: hsl(var(--cube-orange)) !important; 
+    background-color: #ff8c00 !important;
+  }
+  .sticker-red { 
+    background: hsl(var(--cube-red)) !important; 
+    background-color: #ff0000 !important;
+  }
+  .sticker-green { 
+    background: hsl(var(--cube-green)) !important; 
+    background-color: #00aa00 !important;
+  }
+  .sticker-blue { 
+    background: hsl(var(--cube-blue)) !important; 
+    background-color: #0066ff !important;
+  }
   
   /* Glass effect */
   .glass {
