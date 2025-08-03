@@ -5,12 +5,13 @@ import ControlPanel from './ControlPanel';
 import MoveSequenceDisplay from './MoveSequenceDisplay';
 import { CubeState, SolverState, PerformanceMetrics } from '@/types/cube';
 import { createSolvedCube, generateScramble, applyMoveSequence, isCubeSolved } from '@/utils/cubeLogic';
-import { CubeSolver } from '@/utils/cubeSolver';
+import { CubeSolver, AStarSolver } from '@/utils/cubeSolver';
 import { toast } from 'sonner';
 
 const RubiksCubeSolver: React.FC = () => {
   const [cubeState, setCubeState] = useState<CubeState>(createSolvedCube());
   const [rotation, setRotation] = useState({ x: 15, y: 45 });
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState<string>('layer-by-layer');
   const [solverState, setSolverState] = useState<SolverState>({
     isScrambled: false,
     isSolving: false,
@@ -67,12 +68,20 @@ const RubiksCubeSolver: React.FC = () => {
     setSolverState(prev => ({ ...prev, isSolving: true }));
     setAutoRotate(false);
     
-    toast.info('Solving cube...');
+    const algorithmName = selectedAlgorithm === 'astar' ? 'A* Search' : 'Layer-by-Layer';
+    toast.info(`Solving cube with ${algorithmName} algorithm...`);
 
     // Simulate solving with delay for visualization
     setTimeout(() => {
-      const solver = new CubeSolver(cubeState);
-      const result = solver.solve();
+      let result;
+      
+      if (selectedAlgorithm === 'astar') {
+        const astarSolver = new AStarSolver(cubeState);
+        result = astarSolver.solve();
+      } else {
+        const layerSolver = new CubeSolver(cubeState);
+        result = layerSolver.solve();
+      }
       
       setSolverState(prev => ({
         ...prev,
@@ -86,9 +95,9 @@ const RubiksCubeSolver: React.FC = () => {
       
       setPerformanceMetrics(result.metrics);
       
-      toast.success(`Cube solving algorithm completed! ${result.moves.length} moves in ${result.metrics.solveTime}ms`);
+      toast.success(`${result.metrics.algorithm} completed! ${result.moves.length} moves in ${result.metrics.solveTime}ms`);
     }, 1000);
-  }, [cubeState, solverState.isScrambled]);
+  }, [cubeState, solverState.isScrambled, selectedAlgorithm]);
 
   // Handle step-by-step solving
   const handleStep = useCallback(() => {
@@ -157,6 +166,8 @@ const RubiksCubeSolver: React.FC = () => {
             <ControlPanel
               solverState={solverState}
               performanceMetrics={performanceMetrics}
+              selectedAlgorithm={selectedAlgorithm}
+              onAlgorithmChange={setSelectedAlgorithm}
               onScramble={handleScramble}
               onSolve={handleSolve}
               onReset={handleReset}

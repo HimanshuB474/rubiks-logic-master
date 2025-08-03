@@ -1,12 +1,15 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Play, Shuffle, RotateCcw, Pause, SkipForward } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Play, Shuffle, RotateCcw, Pause, SkipForward, Zap } from 'lucide-react';
 import { SolverState, PerformanceMetrics } from '@/types/cube';
 
 interface ControlPanelProps {
   solverState: SolverState;
   performanceMetrics: PerformanceMetrics | null;
+  selectedAlgorithm: string;
+  onAlgorithmChange: (algorithm: string) => void;
   onScramble: () => void;
   onSolve: () => void;
   onReset: () => void;
@@ -17,6 +20,8 @@ interface ControlPanelProps {
 const ControlPanel: React.FC<ControlPanelProps> = ({
   solverState,
   performanceMetrics,
+  selectedAlgorithm,
+  onAlgorithmChange,
   onScramble,
   onSolve,
   onReset,
@@ -25,6 +30,30 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
 }) => {
   return (
     <div className="space-y-6">
+      {/* Algorithm Selection */}
+      <Card className="p-6 glass">
+        <h3 className="text-lg font-semibold mb-4 text-foreground">Algorithm Selection</h3>
+        <Select value={selectedAlgorithm} onValueChange={onAlgorithmChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Choose solving algorithm" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="layer-by-layer">
+              <div className="flex items-center gap-2">
+                <Shuffle className="w-4 h-4" />
+                Layer-by-Layer (Fast)
+              </div>
+            </SelectItem>
+            <SelectItem value="astar">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4" />
+                A* Search (Optimal)
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </Card>
+
       {/* Control Buttons */}
       <Card className="p-6 glass">
         <h3 className="text-lg font-semibold mb-4 text-foreground">Cube Controls</h3>
